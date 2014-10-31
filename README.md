@@ -1,8 +1,5 @@
-jump61
-======
+Web Host
+========
 
-This repository would be the javascript implementation of the jump61 project. I will implement this if I have enough time.
-
-Updates
-======
-Initial Project created
+This is the webhost for all projects on this domain.
+More projects will be uploaded for fun!
