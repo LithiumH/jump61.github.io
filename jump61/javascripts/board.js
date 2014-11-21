@@ -1,10 +1,7 @@
 function Board(size, game) {
 	this.size = size;
 	this.game = game;
-	this.numPieces = size * size;
 	this.clear();
-	this.numRed = 0;
-	this.numBlue = 0;
 }
 
 Board.prototype.whoseMove = function() {
@@ -44,6 +41,8 @@ Board.prototype.clear = function() {
 	}
 	this.board = [];
 	this.numPieces = size * size;
+	this.numRed = 0;
+	this.numBlue = 0;
 	for (var i = 0; i < size * size; i++) {
 		this.board.push(new Square("white", 1, row(i), col(i), g));
 		this.board[i].repaint(row(i), col(i), "white");

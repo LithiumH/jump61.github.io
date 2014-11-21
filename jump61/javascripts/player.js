@@ -6,6 +6,8 @@ function Player(game, board, side, identifier) {
 }
 
 Player.prototype.makeMove = function(r, c) {
+	var side = this.side;
+	var board = this.board;
 	if (this.identifier == "AI") {
 		this.AIMove(this.game);
 	} else {
@@ -14,9 +16,9 @@ Player.prototype.makeMove = function(r, c) {
 };
 
 Player.prototype.AIMove = function(game) {
-	game.makeMove(this.side, 2, 2);
+	game.makeMove(2, 2);
 };
 
 Player.prototype.humanMove = function(game, r, c) {
-	game.makeMove(this.side, r, c);
+	game.makeMove(r, c);
 };

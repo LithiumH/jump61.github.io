@@ -16,17 +16,24 @@ MouseInput.prototype.listen = function() {
 				var r = parseInt(rc[0]);
 				var c = parseInt(rc[1]);
 				var player = game.board.whoseMove();
-				playerText.innerText = game.opposite(player);
-				if (player === "red") {
-					game.red.makeMove(r, c);
-				} else {
-					game.blue.makeMove(r, c);
+				var maplayer = {
+					red : "Red",
+					blue : "Blue"
 				}
+				var opp = game.opposite(player);
+				// debugger;
+				if (game.board.isLegal(player, r, c)) {
+					if (player === "red") {
+						game.red.makeMove(r, c);
+					} else {
+						game.blue.makeMove(r, c);
+					}
+					playerText.innerText = opp;
+				} else {
+					playerText.innerText = maplayer[player];
+				}
+
 			});
 		}
 	}
-};
-
-MouseInput.prototype.doClick = function(event) {
-	
 };

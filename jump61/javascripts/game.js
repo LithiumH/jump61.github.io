@@ -7,14 +7,13 @@ function Game() {
 	this.listen();
 }
 
-Game.prototype.makeMove = function(side, r, c) {
-	if (this.board.isLegal(side, r, c)) {
-		this.board.addSpot(side, r, c);
-	}
+Game.prototype.makeMove = function(r, c) {
+	var side = this.board.whoseMove()
+	this.board.addSpot(side, r, c);
 	var winner = this.board.getWinner();
 	if (winner !== "white") {
 		var playerText = document.querySelector(".player");
-		playerText.innerText = this.opposite(winner) + "(The Winner)";
+		playerText.innerText = winner + "(The Winner)";
 	}
 };
 
