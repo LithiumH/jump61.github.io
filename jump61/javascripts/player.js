@@ -3,6 +3,9 @@ function Player(game, board, side, identifier) {
 	this.identifier = identifier;
 	this.game = game;
 	this.board = board;
+	if (identifier === "human") {
+		this.mouse = new MouseInput(game, board, side);
+	} 
 }
 
 Player.prototype.makeMove = function(r, c) {
@@ -16,9 +19,9 @@ Player.prototype.makeMove = function(r, c) {
 };
 
 Player.prototype.AIMove = function(game) {
-	game.makeMove(2, 2);
+	var success = game.makeMove(2, 2);
 };
 
 Player.prototype.humanMove = function(game, r, c) {
-	game.makeMove(r, c);
+	var success = game.makeMove(r, c);
 };

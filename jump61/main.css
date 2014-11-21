@@ -10,16 +10,16 @@ body {
 .container {
 	position: relative;
 	padding-top: 100px;
+	float: left;
 }
 
-.heading {
+.jumbatron h2, h3{
 	text-align: center;
+	margin: 0;
 }
 
 .options {
-}
-
-.button {
+	width: 500px;
 }
 
 .board {
@@ -47,6 +47,5 @@ img {
 	width: 90px;
 	height: 90px;
 	position: relative;
-	float: left;
 	border-radius: 8px;
 }

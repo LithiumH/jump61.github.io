@@ -1,7 +1,19 @@
-function Board(size, game) {
-    this.size = size;
-    this.game = game;
-    this.clear();
+function Board(arg1, arg2) {
+    if (arguments.length === 2) {
+        this.size = arg1;
+        this.game = arg2;
+        this.clear();
+        this.testing = false;
+    } else {
+        var board = arg1;
+        this.board = [];
+        for (var r = 1; r <= arg1.size; r++) {
+            for (var c = 1; c <= arg1.size; c ++) {
+                this.board.push(arg1.board[this.sqNum(r, c)]);
+            }
+        }
+        this.testing = true;
+    }
 }
 
 Board.prototype.whoseMove = function() {
@@ -13,7 +25,9 @@ Board.prototype.whoseMove = function() {
 };
 
 Board.prototype.isLegal = function(side, r, c) {
-    // debugger;
+    if (!this.isValid(r, c)) {
+        return false;
+    }
     sq = this.board[this.sqNum(r, c)];
     if (sq.side !== "white" && side !== sq.side) {
         return false;
@@ -78,23 +92,22 @@ Board.prototype.initPaint = function() {
     }
 };
 
-Board.prototype.get = function(r, c) {
-    return this.board[this.sqNum(r, c)];
-};
-
 Board.prototype.addSpot = function(player, r, c) {
-    this.adder(player, r, c);
-    this.repaint();
+    var success = this.adder(player, r, c);
+    if (!this.testing) {
+        this.repaint();
+    }
+    return success;
 };
 
 Board.prototype.adder = function(player, r, c) {
     if (!this.isValid(r, c)) {
-        return null;
+        return false;
     }
     var size = this.size;
     var total = size * size;
     if (this.numRed === total || this.numBlue === total) {
-        return null;
+        return undefined;
     }
 
     r = parseInt(r);
@@ -135,6 +148,7 @@ Board.prototype.adder = function(player, r, c) {
             this.adder(player, pair[0], pair[1]);
         };
     }
+    return true;
 };
 
 Board.prototype.update = function(newPlayer, oldPlayer, newNum, oldNum) {

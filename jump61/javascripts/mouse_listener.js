@@ -1,11 +1,13 @@
-function MouseInput(game, board) {
+function MouseInput(game, board, side) {
 	this.game = game;
 	this.board = board;
+	this.side = side;
 	this.listen();
 }
 
 MouseInput.prototype.listen = function() {
 	var game = this.game;
+	var side = this.side;
 	for (var r = 1; r <= this.board.size; r++) {
 		for (var c = 1; c <= this.board.size; c++) {
 			var sqDoc = document.querySelector(".sq"+r+"-"+c)
@@ -17,19 +19,21 @@ MouseInput.prototype.listen = function() {
 				var r = parseInt(rc[0]);
 				var c = parseInt(rc[1]);
 				var player = game.board.whoseMove();
+				if (player !== side) {
+					return null;
+				}
 				var maplayer = {
 					red : "Red",
 					blue : "Blue"
 				}
-				// debugger;
-				if (game.board.isLegal(player, r, c)) {
-					if (player === "red") {
+				if (game.board.isLegal(side, r, c)) {
+					if (side === "red") {
 						game.red.makeMove(r, c);
 					} else {
 						game.blue.makeMove(r, c);
 					}
 				} else {
-					playerText.innerText = maplayer[player];
+					playerText.innerText = maplayer[side];
 				}
 
 			});
