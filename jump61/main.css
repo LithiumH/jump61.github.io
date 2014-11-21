@@ -26,21 +26,16 @@ body {
 	border-radius: 6px;
 	background-color: #CCFF99;
 	position: relative;
-	width: 300px;
-	height: 315px;
-	margin-left: 85px;
-	margin-right: 85px;
 	margin-top:20px;
 	padding-left: 15px;
 	padding-top: 15px;
 	padding-right: 15px;
 }
 
-.row1, .row2, .row3 {
+.row {
 	position: relative;
 	margin-bottom: 15px;
 	height: 90px;
-	width: 300px;
 }
 
 .inputbox {
@@ -48,9 +43,7 @@ body {
 	position: relative;
 }
 
-.sq1-1, .sq1-2, .sq1-3,
-.sq2-1, .sq2-2, .sq2-3,
-.sq3-1, .sq3-2, .sq3-3 {
+img {
 	width: 90px;
 	height: 90px;
 	position: relative;

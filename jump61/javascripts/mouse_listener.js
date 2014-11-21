@@ -10,6 +10,7 @@ MouseInput.prototype.listen = function() {
 		for (var c = 1; c <= this.board.size; c++) {
 			var sqDoc = document.querySelector(".sq"+r+"-"+c)
 			sqDoc.addEventListener("click", function doClick (event) {
+				event.preventDefault();
 				var playerText = document.querySelector(".player");
 				var rc = event.target.className.slice(2, 5);
 				rc = rc.split("-");

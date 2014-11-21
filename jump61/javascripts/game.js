@@ -1,4 +1,3 @@
-// Get things from document
 function Game() {
 	this.board = new Board(3, this);
 	this.red = new Player(this, this.board, "red", "human");
@@ -29,31 +28,31 @@ Game.prototype.listen = function(event) {
 	var textBox = document.querySelector(".inputbox input");
 	var playerText = document.querySelector(".player");
 	var restart = document.querySelector(".button button");
-	var b = this.board;
-	var red = this.red;
-	var blue = this.blue;
-	var opposite = this.opposite;
-	var board = this.board;
+	var self = this;
 	restart.addEventListener('click', function doRestart (event) {
-		board.clear();
+		event.preventDefault();
+		self.board.clear();
 		playerText.innerText = "Red";
 	})
 
 	var readExecuteCommand = function(event) {
-		// debugger;
 		event.preventDefault();
 		var text = textBox.value;
 		var next = text.split(" ");
 		var re = /\d \d/;
 		if (text.match(re) !== null) {
-			var player = b.whoseMove();
-			playerText.innerText = opposite(player);
+			var player = self.board.whoseMove();
 			if (player === "red") {
-				red.makeMove(next[0], next[1]);
+				self.red.makeMove(next[0], next[1]);
 			} else {
-				blue.makeMove(next[0], next[1]);
+				self.blue.makeMove(next[0], next[1]);
 			}
-		} else {
+		} else if (next[0] === 'size') {
+			self.board = new Board(parseInt(next[1]), self);
+		} else if (next[0] === 'clear') {
+			self.board.clear();
+		}
+		else {
 			console.log("not a valid command");
 		}
 	};
