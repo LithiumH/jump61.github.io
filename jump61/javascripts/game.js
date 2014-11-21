@@ -11,9 +11,16 @@ Game.prototype.makeMove = function(r, c) {
 	var side = this.board.whoseMove()
 	this.board.addSpot(side, r, c);
 	var winner = this.board.getWinner();
+	var playerText = document.querySelector(".player");
+	var maplayer = {
+		red : "Red",
+		blue : "Blue"
+	}
 	if (winner !== "white") {
-		var playerText = document.querySelector(".player");
-		playerText.innerText = winner + "(The Winner)";
+		playerText.innerText = maplayer[winner] + "(The Winner)";
+	} else {
+		var opp = this.opposite(side);
+		playerText.innerText = opp;
 	}
 };
 

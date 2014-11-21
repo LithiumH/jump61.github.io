@@ -20,7 +20,6 @@ MouseInput.prototype.listen = function() {
 					red : "Red",
 					blue : "Blue"
 				}
-				var opp = game.opposite(player);
 				// debugger;
 				if (game.board.isLegal(player, r, c)) {
 					if (player === "red") {
@@ -28,7 +27,6 @@ MouseInput.prototype.listen = function() {
 					} else {
 						game.blue.makeMove(r, c);
 					}
-					playerText.innerText = opp;
 				} else {
 					playerText.innerText = maplayer[player];
 				}
