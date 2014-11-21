@@ -1,5 +1,6 @@
-function Board(size) {
+function Board(size, game) {
 	this.size = size;
+	this.game = game;
 	this.numPieces = size * size;
 	this.clear();
 	this.numRed = 0;
@@ -34,6 +35,7 @@ Board.prototype.sqNum = function(r, c) {
 
 Board.prototype.clear = function() {
 	var size = this.size;
+	var g = this.game;
 	var col = function(n) {
 		return n % size + 1;
 	}
@@ -41,10 +43,15 @@ Board.prototype.clear = function() {
 		return Math.floor(n / size) + 1;
 	}
 	this.board = [];
-	for (var i = 0; i < this.numPieces; i++) {
-		this.board.push(new Square("white", 1));
+	this.numPieces = size * size;
+	for (var i = 0; i < size * size; i++) {
+		this.board.push(new Square("white", 1, row(i), col(i), g));
 		this.board[i].repaint(row(i), col(i), "white");
 	}
+};
+
+Board.prototype.get = function(r, c) {
+	return this.board[this.sqNum(r, c)];
 };
 
 Board.prototype.addSpot = function(player, r, c) {
