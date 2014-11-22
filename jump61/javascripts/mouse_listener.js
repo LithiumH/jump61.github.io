@@ -26,6 +26,10 @@ MouseInput.prototype.listen = function() {
 					red : "Red",
 					blue : "Blue"
 				}
+				var realPlayers = {
+					red : game.red,
+					blue : game.blue
+				}
 				if (game.board.isLegal(side, r, c)) {
 					if (side === "red") {
 						game.red.makeMove(r, c);
@@ -35,7 +39,11 @@ MouseInput.prototype.listen = function() {
 				} else {
 					playerText.innerText = maplayer[side];
 				}
-
+				var opponent = realPlayers[game.opposite(player).toLowerCase()];
+				if (opponent.identifier === "AI") {
+					opponent.makeMove();
+					playerText.innerText = maplayer[side];
+				}
 			});
 		}
 	}

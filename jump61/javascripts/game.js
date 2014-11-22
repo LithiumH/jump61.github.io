@@ -1,7 +1,7 @@
 function Game() {
 	this.board = new Board(3, this);
-	this.red = new Player(this, this.board, "red", "human");
-	this.blue = new Player(this, this.board, "blue", "human");
+	this.red = new Player(this, "red", "human");
+	this.blue = new Player(this, "blue", "AI");
 	this.listen();
 }
 
@@ -17,8 +17,7 @@ Game.prototype.makeMove = function(r, c) {
 	if (winner !== "white") {
 		playerText.innerText = maplayer[winner] + "(The Winner)";
 	} else {
-		var opp = this.opposite(side);
-		playerText.innerText = opp;
+		playerText.innerText = this.opposite(side);
 	}
 	return success;
 };
@@ -33,9 +32,10 @@ Game.prototype.listen = function(event) {
 		// debugger;
 		var sizeBox = document.querySelector(".input input");
 		event.preventDefault();
-		self.board.clear();
 		playerText.innerText = "Red";
-		if (parseInt(sizeBox.value) !== self.size) {
+		if (sizeBox.value === "") {
+			self.board.clear();
+		} else if (parseInt(sizeBox.value) !== self.size) {
 			self.board = new Board(parseInt(parseInt(sizeBox.value)), self);
 		}
 		// debugger;
@@ -63,6 +63,8 @@ Game.prototype.listen = function(event) {
 			self.board = new Board(parseInt(next[1]), self);
 		} else if (next[0] === 'clear') {
 			self.board.clear();
+		} else if (next[0] ==='undo') {
+			self.board.undo();
 		}
 		else {
 			console.log("not a valid command");

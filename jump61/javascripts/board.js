@@ -6,15 +6,64 @@ function Board(arg1, arg2) {
         this.testing = false;
     } else {
         var board = arg1;
-        this.board = [];
-        for (var r = 1; r <= arg1.size; r++) {
-            for (var c = 1; c <= arg1.size; c ++) {
-                this.board.push(arg1.board[this.sqNum(r, c)]);
-            }
-        }
+        this.size = board.size;
         this.testing = true;
+        this.clear();
+        for (var n = 0; n < board.size * board.size; n++) {
+            var sq = board.board[n];
+            this.board.push(new Square(sq.side, sq.spots, this.row(n), this.col(n), this.size));
+            this.update(sq.side, "white", sq.spots, 1);
+        };
     }
 }
+
+Board.prototype.clear = function() {
+    var size = this.size;
+    this.board = [];
+    this.numPieces = size * size;
+    this.numRed = 0;
+    this.numBlue = 0;
+    this.undoHistory = [];
+    if (!this.testing) {
+        this.initPaint();
+        this.game.mouse = new MouseInput(this.game, this);
+    }
+
+};
+
+Board.prototype.numOfSide = function(side) {
+    var mapper = {
+        red : this.numRed,
+        blue : this.numBlue
+    }
+    return mapper[side];
+};
+
+Board.prototype.internalCopy = function(board) {
+    var oldboard = this.board;
+    this.board = [];
+    for (var n = 0; n < board.length; n++) {
+        var sq = board[n];
+        var oldsq = oldboard[n];
+        this.board.push(new Square(sq.side, sq.spots, this.row(n), this.col(n), this.size));
+        this.update(sq.side, oldsq.side, sq.spots, oldsq.spots);
+    };
+};
+
+Board.prototype.readdLisener = function() {
+    if (this.game.red.identifier === "human") {
+        this.game.red.mouse = new MouseInput(this.game, this, "red");
+    } else if (this.game.blue.identifier === "human") {
+        this.game.blue.mouse = new MouseInput(this.game, this, "blue");
+    }
+};
+
+Board.prototype.undo = function() {
+    var board = this.undoHistory.pop();
+    this.internalCopy(board);
+    // this.repaint();
+    // this.readdLisener();
+};
 
 Board.prototype.whoseMove = function() {
     if (((this.numPieces + this.size) & 1) === 0) {
@@ -44,24 +93,12 @@ Board.prototype.sqNum = function(r, c) {
     return c - 1 + (r - 1) * this.size;
 };
 
-Board.prototype.clear = function() {
-    // debugger;
-    var size = this.size;
-    var g = this.game;
-    var col = function(n) {
-        return n % size + 1;
-    }
-    var row = function(n) {
-        return Math.floor(n / size) + 1;
-    }
-    this.board = [];
-    this.numPieces = size * size;
-    this.numRed = 0;
-    this.numBlue = 0;
-    // debugger;
-    this.initPaint();
-    this.game.mouse = new MouseInput(this.game, this);
+Board.prototype.col = function(n) {
+    return n % this.size + 1;
+};
 
+Board.prototype.row = function(n) {
+    return Math.floor(n / this.size) + 1;
 };
 
 Board.prototype.initPaint = function() {
@@ -93,6 +130,12 @@ Board.prototype.initPaint = function() {
 };
 
 Board.prototype.addSpot = function(player, r, c) {
+    var newBoard = [];
+    for (var n = 0; n < this.board.length; n++) {
+        var sq = this.board[n];
+        newBoard.push(new Square(sq.side, sq.spots, this.row(n), this.col(n), this.size));
+    };
+    this.undoHistory.push(newBoard);
     var success = this.adder(player, r, c);
     if (!this.testing) {
         this.repaint();
@@ -112,29 +155,11 @@ Board.prototype.adder = function(player, r, c) {
 
     r = parseInt(r);
     c = parseInt(c);
-
-    var neighbors = function() {
-        var n = 0;
-        if (r > 1) {
-            n += 1;
-        }
-        if (c > 1) {
-            n += 1;
-        }
-        if (r < size) {
-            n += 1;
-        }
-        if (c < size) {
-            n += 1;
-        }
-        return n;
-    }
-    // debugger;
     var sq = this.board[this.sqNum(r, c)];
     this.update(player, sq.side, sq.spots + 1, sq.spots);
     sq.side = player;
     sq.spots += 1;
-    if (sq.spots > neighbors()) {
+    if (sq.spots > this.neighbors(r, c)) {
         this.update(player, sq.side, 1, sq.spots);
         sq.spots = 1;
         var toAdd = [
@@ -149,6 +174,23 @@ Board.prototype.adder = function(player, r, c) {
         };
     }
     return true;
+};
+
+Board.prototype.neighbors = function(r, c) {
+    var n = 0;
+    if (r > 1) {
+        n += 1;
+    }
+    if (c > 1) {
+        n += 1;
+    }
+    if (r < this.size) {
+        n += 1;
+    }
+    if (c < this.size) {
+        n += 1;
+    }
+    return n;
 };
 
 Board.prototype.update = function(newPlayer, oldPlayer, newNum, oldNum) {
