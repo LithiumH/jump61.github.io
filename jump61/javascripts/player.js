@@ -20,19 +20,6 @@ Player.prototype.AIMove = function(game) {
     var g = this.game;
     var b = this.game.board;
     var staticEval = function (player, board) {
-        // var result = 0;
-        // for (var n = 0; n < board.board.length; n++) {
-        //     var sq = board.board[n];
-        //     var sqVal = 15 - 20 * sq.spots / b.neighbors(b.row(n), b.col(n));
-        //     if (sq.side === "white") {
-        //         continue;
-        //     } else if (sq.side === player) {
-        //         result += sqVal;
-        //     } else {
-        //         result -= sqVal;
-        //     }
-        // };
-        // return result;
         return board.numOfSide(player) - board.numOfSide(g.opposite(player).toLowerCase());
     };
     var win = 20000;
@@ -77,7 +64,9 @@ Player.prototype.AIMove = function(game) {
         return Math.min(cutoff, bestMove[1]);
     }
     var moves = [];
+    console.log("calculating");
     var val = minmax(this.side, new Board(b), 5, win, moves);
+    console.log("calculation complete");
     var r = b.row(moves[0]);
     var c = b.col(moves[0]);
     g.makeMove(r, c);

@@ -23,8 +23,6 @@ Game.prototype.makeMove = function(r, c) {
 };
 
 Game.prototype.listen = function(event) {
-	var button = document.querySelector(".inputbox button");
-	var textBox = document.querySelector(".inputbox input");
 	var playerText = document.querySelector(".player");
 	var restart = document.querySelector(".input button");
 	var self = this;
@@ -46,32 +44,6 @@ Game.prototype.listen = function(event) {
 			self.blue.mouse = new MouseInput(self, self.board, "blue");
 		}
 	})
-
-	var readExecuteCommand = function(event) {
-		event.preventDefault();
-		var text = textBox.value;
-		var next = text.split(" ");
-		var re = /\d \d/;
-		if (text.match(re) !== null) {
-			var player = self.board.whoseMove();
-			if (player === "red") {
-				self.red.makeMove(next[0], next[1]);
-			} else {
-				self.blue.makeMove(next[0], next[1]);
-			}
-		} else if (next[0] === 'size') {
-			self.board = new Board(parseInt(next[1]), self);
-		} else if (next[0] === 'clear') {
-			self.board.clear();
-		} else if (next[0] ==='undo') {
-			self.board.undo();
-		}
-		else {
-			console.log("not a valid command");
-		}
-		text = "";
-	};
-	button.addEventListener('click', readExecuteCommand);
 }
 
 Game.prototype.opposite = function(side) {

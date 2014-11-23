@@ -38,6 +38,7 @@ MouseInput.prototype.listen = function() {
 					}
 				} else {
 					playerText.innerText = maplayer[side];
+					return null;
 				}
 				var opponent = realPlayers[game.opposite(player).toLowerCase()];
 				if (opponent.identifier === "AI") {
