@@ -1,0 +1,20 @@
+html
+    head
+        title CS61A Queue System
+        link(href="frame.css", rel="stylesheet")
+        script(src="firebase.js")
+    body
+        .jumbotron
+            h1 Welcome to CS61A
+            .statusBar
+                h3 waiting
+            form#user(method="post")
+                .field
+                    label Name
+                    input(type="text")
+                .field
+                    label Question number
+                    input(type="text")
+                button(onclick="sendForm()") Submit
+        script(src="client.js")
+

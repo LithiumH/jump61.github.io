@@ -1,0 +1,15 @@
+
+body {
+    background-color: #c2f0ff;
+    text-align: center;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.field {
+    padding: 23px;
+}
+
+.field label {
+    display: block;
+    padding-bottom: 10px;
+}

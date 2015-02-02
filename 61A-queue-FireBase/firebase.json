@@ -1,0 +1,9 @@
+{
+  "firebase": "cs61a-queue",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
